@@ -10,6 +10,8 @@
 
 ![](../images/arduinoide.png)
 
+---
+
 ## 2. Installing the ESP Board via the Boards Manager
 
 1. In the left column click on "Boards Manager"
@@ -18,6 +20,8 @@
 4. Wait for the installation to complete
 ![Boards Manager](../images/boardsmanager.png)
 ![Boards Manager ESP](../images/boardsmanager_esp32.png)
+
+---
 
 ## 3. Connect to your ESP32 Board
 
@@ -33,6 +37,8 @@
 
 ![Boards Manager](../images/selectboard.png)
 ![Boards Manager ESP](../images/selectboardandport.png)
+
+---
 
 ## 4. Blink = Hello World (Basic Syntax)
 Arduino Code is written mostly in a variant of C++, which is made specific for the Arduino environment. Like in every programming language, it is important that you are precise in your syntax.
@@ -107,12 +113,15 @@ void loop() {
 }
 ```
 
+---
+
 ### 4. Breadboards
 The breadboard allows you to quickly and easily build electronic circuits without soldering by simply plugging in components and wires. Its internal connections look like this:
 
 ![Breadboard](../images/breadboard.jpg)
 
 
+---
 
 ### 5. Blink the LED from the Kit
 1. Find the Red LED in the Kit
@@ -162,6 +171,7 @@ void loop() {
 }
 ```
 
+---
 
 ### 6. Voltage, Amplitude, Watts
 
@@ -174,6 +184,9 @@ In order to not burn things, we need to learn the basics of electricity.
 ```
 Watts = Volts x Amps
 ```
+
+---
+
 ### 7. Resistors
 
 When connecting an LED to a power source (like an Arduino), you must use a **resistor** in series with the LED. Without a resistor, **too much current** can flow through the LED. This will cause the LED to get very hot and quickly burn.
@@ -181,7 +194,7 @@ When connecting an LED to a power source (like an Arduino), you must use a **res
 LEDs only need a small current (usually around 20mA). Directly connecting them to a power supply (like 5V) will push way more current through them than they can handle. By adding a resistor, you "slow down" the flow of electricity so only a safe amount reaches the LED.
 
 
-**Choosing a Resistor Value for an LED:**
+####**Choosing a Resistor Value for an LED:**
 
 The resistor value depends on the LED's specs and the supply voltage. For a 5V Arduino and a standard red LED (forward voltage ~2V):
 
@@ -190,7 +203,7 @@ Resistor (ohms) = (Supply Voltage - LED Forward Voltage) / Desired Current
                 = (5V - 2V) / 0.02A = 150Ω
 ```
 
-**Resistor Cheat Sheet**
+####**Resistor Cheat Sheet**
 Normally the first band is a little bit closer to the edge or wider. Most of the time the Tolerance is either gold or silver and on the very right.
 
 Find the 150Ω Resistor and place it in the circuit. The LED should be more dim now.
@@ -200,6 +213,7 @@ Find the 150Ω Resistor and place it in the circuit. The LED should be more dim 
 ![Resistor Cheat Sheet](../images/resistor_cheatsheet.jpg)
 
 
+---
 
 ### 8. Print Messages to the Serial Port
 
@@ -248,6 +262,8 @@ void loop() {
    LED is OFF
    ```
    
+
+---
 
 ### 9. Potentiometer
 A potentiometer is a variable resistor that is be used to adjust voltage. Turning the knob changes the resistance, which lets you vary the output signal. 
@@ -348,6 +364,8 @@ void loop() {
 }
 ```
 
+---
+
 ### 10. Wifi Blink
 
 **Example Code:**
@@ -389,6 +407,8 @@ void loop() {}
 ```
 
 
+---
+
 ### 11. Wifi Traffic LED
 
 **Example Code:**
@@ -420,7 +440,6 @@ void setup() {
   Serial.begin(115200);
   delay(500);
 
-  // Connect (same idea as WiFi.begin on any ESP32 example)
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 
@@ -430,7 +449,7 @@ void setup() {
     Serial.print(".");
   }
   Serial.println();
-  Serial.print("OK, IP address: ");
+  Serial.print("Connected, IP address: ");
   Serial.println(WiFi.localIP());
 
   esp_wifi_set_promiscuous_rx_cb(onWiFiPacket);
