@@ -1,0 +1,464 @@
+# Session 02
+
+![](../images/esp32-c3-supermini-schematics.jpg)
+
+## 1. Installing the Arduino IDE
+
+1. Go to [Arduino.cc/en/software](https://www.arduino.cc/en/software/) and download the latest version of the Arduino IDE
+2. Open the downloaded file and follow the install instructions (PC) / Drag into your Applications Folder (MAC)
+3. Open Arduino IDE
+
+![](../images/arduinoide.png)
+
+## 2. Installing the ESP Board via the Boards Manager
+
+1. In the left column click on "Boards Manager"
+2. In the search field type "esp32"
+3. Look for "esp32 by espressif" and press install
+4. Wait for the installation to complete
+![Boards Manager](../images/boardsmanager.png)
+![Boards Manager ESP](../images/boardsmanager_esp32.png)
+
+## 3. Connect to your ESP32 Board
+
+1. Take out the provided USB-C cable and connect it both to the ESP32 and your Laptop. Use the Adapter if needed.
+2. The ESP32 should show a red LED indicating its powered on
+3. Locate the two small buttons on the board called "BOOT" and "RST"
+4. Press and hold the BOOT Button. While still holding, also press and release the "RST" button. Now release the BOOT Button. This should bring your ESP32 into Download Mode.
+5. To upload programs to the ESP32, you need to select the correct board.
+6. In the top bar click the Board Dropdown and select "Select other board and port"
+7. In the popup type in the search bar "ESP32C3 Dev Module" and select it
+8. The right window shows your ports. There should be a port with "(USB)" - select it
+9. Press OK
+
+![Boards Manager](../images/selectboard.png)
+![Boards Manager ESP](../images/selectboardandport.png)
+
+## 4. Blink = Hello World (Basic Syntax)
+Arduino Code is written mostly in a variant of C++, which is made specific for the Arduino environment. Like in every programming language, it is important that you are precise in your syntax.
+
+### 1. Basic Program Structure
+   **Setup** 
+   This is everything that runs once. Things will be turned on or activated from here. Runs only at the beginning of the program, hence when you upload code/turn the ESP on.
+   These functions need to be called for the program to work – they can be empty though.
+
+   ```c++
+   void setup() {
+        // Code is happening in here
+   }
+   ```
+
+   **Loop**
+   This is everything that runs forever. Like LEDs blinking, Motors spinning, you name it.
+
+   ```c++
+   void loop() {
+        // Code is happening here
+   }
+    ```
+
+    
+
+### 2. Adressing Pins
+Arduino IDE has some built-in **functions** that are use to address the different parts of the ESP32. The most basic is called `digitalWrite()`. It is used to adress a pin on the board and regulate it Output. LOW is off, while HIGH is on.
+
+Between the brackets of the function you write the values you want to pass to it.
+
+So to turn on a pin you need to write:
+
+```c++
+digitalWrite(8, HIGH);
+```
+
+To turn it off respectively:
+```c++
+digitalWrite(8, LOW);
+```
+
+Line endings are always marked with `;`
+
+We need to make sure the pin configured to put stuff out - this needs only to happen once:
+    
+```c++
+pinMode(8, OUTPUT);
+```
+
+
+### 3. Time
+**Time** is calculated in Milliseconds (ms). If you put a delay() in your code, the program waits for that time to do the next thing. 
+
+```c++
+delay(1000);
+```
+
+### 4. Blink Onboard LED
+The internal LED of the ESP is at Pin 8. Lets blink it. After running this code a blue LED on the ESP should Blink.
+
+```
+void setup() {
+  pinMode(8, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(8, HIGH); 
+  delay(1000);                     
+  digitalWrite(8, LOW); 
+  delay(1000);                     
+}
+```
+
+### 4. Breadboards
+The breadboard allows you to quickly and easily build electronic circuits without soldering by simply plugging in components and wires. Its internal connections look like this:
+
+![Breadboard](../images/breadboard.jpg)
+
+
+
+### 5. Blink the LED from the Kit
+1. Find the Red LED in the Kit
+2. The LED has two "legs". The longer one is positive (+), the shorter one negative (-).
+3. Connect the + to Pin 4, - to G (Ground)
+
+Instead of changing all the 8s in the code to 4s we can use variables. Variables need to be defined before the the main code gets executed.
+
+```c++
+int LedPin = 4;
+```
+
+Here are some of the basic variable types in Arduino:
+
+- **int**: Integer type. Stores whole numbers, e.g., `int counter = 0;`
+- **float**: Floating point number. Stores decimal numbers, e.g., `float temperature = 24.6;`
+- **double**: Double-precision floating point. Behaves like `float`, e.g., `double distance = 10.25;`
+- **char**: Character type. Stores a single character, e.g., `char letter = 'A';`
+- **boolean**: Stores `true` or `false`, e.g., `boolean isOn = false;`
+- **byte**: 8-bit unsigned number (0–255), e.g., `byte sensorValue = 128;`
+- **String**: Stores a string of text (note: capital S), e.g., `String name = "ESP32";`
+- **unsigned int, unsigned long, etc.**: Unsigned versions of numeric types for only positive values.
+
+Example usage:
+```c++
+int ledPin = 4;           // Pin number (integer)
+float voltage = 5.0;      // Decimal number
+char grade = 'A';         // Character
+boolean isActive = true;  // True or false
+```
+
+
+The new code should look like this:
+
+```
+int ledPin = 4;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(ledPin, HIGH); 
+  delay(1000);                     
+  digitalWrite(ledPin, LOW); 
+  delay(1000);                     
+}
+```
+
+
+### 6. Voltage, Amplitude, Watts
+
+In order to not burn things, we need to learn the basics of electricity. 
+
+- **Voltage:** How hard the electricity is pushing
+- **Amplitude:** How much electricity is moving. More Amps ➔ Brigher LEDs
+- **Watts:** Measurement Unit of Power
+
+```
+Watts = Volts x Amps
+```
+### 7. Resistors
+
+When connecting an LED to a power source (like an Arduino), you must use a **resistor** in series with the LED. Without a resistor, **too much current** can flow through the LED. This will cause the LED to get very hot and quickly burn.
+
+LEDs only need a small current (usually around 20mA). Directly connecting them to a power supply (like 5V) will push way more current through them than they can handle. By adding a resistor, you "slow down" the flow of electricity so only a safe amount reaches the LED.
+
+
+**Choosing a Resistor Value for an LED:**
+
+The resistor value depends on the LED's specs and the supply voltage. For a 5V Arduino and a standard red LED (forward voltage ~2V):
+
+```
+Resistor (ohms) = (Supply Voltage - LED Forward Voltage) / Desired Current
+                = (5V - 2V) / 0.02A = 150Ω
+```
+
+**Resistor Cheat Sheet**
+Normally the first band is a little bit closer to the edge or wider. Most of the time the Tolerance is either gold or silver and on the very right.
+
+Find the 150Ω Resistor and place it in the circuit. The LED should be more dim now.
+
+[Online Calculator](https://www.calculator.net/resistor-calculator.html)
+
+![Resistor Cheat Sheet](../images/resistor_cheatsheet.jpg)
+
+
+
+### 8. Print Messages to the Serial Port
+
+Printing messages to the Serial Port allows you to monitor what's happening inside your Arduino. This is incredibly useful for debugging and understanding your program.
+
+Let's extend our LED blink example to print messages when the LED turns on and off.
+
+`Serial.begin(9600);` initializes communication between the Arduino and your computer at a speed of 9600 bits per second.  
+
+`Serial.print("Your message");` sends the message to the Serial Monitor.
+
+`Serial.println("Your message");` sends the message to the Serial Monitor and makes a new line.
+
+
+**Updated Code:**
+
+```cpp
+int ledPin = 13;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  digitalWrite(ledPin, HIGH);
+  Serial.println("LED is ON"); 
+  delay(1000);
+
+  digitalWrite(ledPin, LOW);
+  Serial.println("LED is OFF");
+  delay(1000);
+}
+```
+
+####**How to View Serial Messages:**
+
+1. Upload the code to your Arduino board.
+2. In the Arduino IDE, go to **Tools > Serial Monitor** (or CMD/Ctrl + Shift + M).
+3. Set the baud rate of the Serial Monitor to **9600**.
+4. You should see messages like:
+   ```
+   LED is ON
+   LED is OFF
+   LED is ON
+   LED is OFF
+   ```
+   
+
+### 9. Potentiometer
+A potentiometer is a variable resistor that is be used to adjust voltage. Turning the knob changes the resistance, which lets you vary the output signal. 
+
+![Potentiometer](../images/potentiometer.jpg)
+
+#### **Connecting a LED directly to the Potentiometer**
+The potentiometer has three pins. When you look at it from the front the Pins are +V (positive), Output, and GND (negative)
+
+1. Connect the LED directly to 5V and Ground.
+2. Wire the potentiometer before the LED – just like a normal resistor
+3. Turn the knob and fade the LED
+
+
+#### **Reading out the Potentiometer**
+The Arduino reads the output pin voltage of the potentiometer using an analog pin.
+
+**Analog pins** can read varying voltage levels (not just on or off) and provide a value from 0 to 1023 representing that voltage.
+
+Now we learn about **if-conditions**. 
+```cpp
+if (something > other) {
+    Serial.println("Something is bigger than other");
+} else {
+    Serial.println("It's still smaller");
+}
+```
+
+**Example Code:**
+
+```cpp
+int ledPin = 4;
+int potPin = A0;
+int potValue = 0;
+int threshold = 600;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  potValue = analogRead(potPin);
+
+  if (potValue > threshold) {
+    digitalWrite(ledPin, HIGH);
+    Serial.print("Potentiometer: ");
+    Serial.print(potValue);
+    Serial.println("  LED is ON");
+  } else {
+    digitalWrite(ledPin, LOW);
+    Serial.print("Potentiometer: ");
+    Serial.print(potValue);
+    Serial.println("  LED is OFF");
+  }
+
+  delay(50);
+}
+```
+
+#### Pulse-Width-Modulation
+Pulse Width Modulation (PWM) lets us dim the LED by controlling how much of the time it's on, rather than just turning it fully on or off. The Arduino function to access this is called `analogWrite()`
+
+```cpp
+analogWrite(ledPin, brightness);
+````
+
+The `map()` function in Arduino re-scales a number from one range to another, such as converting a sensor input (0–1023) to an LED brightness value (0–255).
+
+```cpp
+map(potValue, 0, 1023, 0, 255);
+```
+
+**Example Code:**
+
+```cpp
+int ledPin = 4;
+int potPin = A0;
+
+int potValue = 0;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  potValue = analogRead(potPin);
+  int brightness = map(potValue, 0, 1023, 0, 255);
+  analogWrite(ledPin, brightness);
+
+  Serial.print("Potentiometer: ");
+  Serial.print(potValue);
+  Serial.print("  LED brightness: ");
+  Serial.println(brightness);
+
+  delay(50);
+}
+```
+
+### 10. Wifi Blink
+
+**Example Code:**
+
+```cpp
+#include <WiFi.h>
+
+constexpr const char *ssid = "ssid";
+constexpr const char *password = "password";
+
+constexpr int LED_PIN = 4;
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
+
+  Serial.begin(115200);
+  delay(500);
+
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect(true);
+  delay(100);
+  WiFi.begin(ssid, password);
+  WiFi.setTxPower(WIFI_POWER_8_5dBm);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print('.');
+  }
+
+  Serial.println();
+  Serial.print("Connected, IP: ");
+  Serial.println(WiFi.localIP());
+
+  digitalWrite(LED_PIN, HIGH);
+}
+
+void loop() {}
+```
+
+
+### 11. Wifi Traffic LED
+
+**Example Code:**
+```cpp
+#include <WiFi.h>
+#include "esp_wifi.h"
+
+// ----- change these for your network -----
+const char *ssid = "YOUR_SSID";
+const char *password = "YOUR_PASSWORD";
+
+const int LED_PIN = 4;
+
+const unsigned long LED_ON_TIME_MS = 35;
+
+volatile unsigned long lastPacketMs = 0;
+
+void onWiFiPacket(void *buf, wifi_promiscuous_pkt_type_t type) {
+  if (type != WIFI_PKT_DATA) {
+    return;
+  }
+  lastPacketMs = millis();
+}
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
+
+  Serial.begin(115200);
+  delay(500);
+
+  // Connect (same idea as WiFi.begin on any ESP32 example)
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+
+  Serial.print("Connecting");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println();
+  Serial.print("OK, IP address: ");
+  Serial.println(WiFi.localIP());
+
+  esp_wifi_set_promiscuous_rx_cb(onWiFiPacket);
+  esp_wifi_set_promiscuous(true);
+}
+
+void loop() {
+  unsigned long now = millis();
+  unsigned long when = lastPacketMs;
+
+  if (now - when <= LED_ON_TIME_MS) {
+    digitalWrite(LED_PIN, HIGH);
+  } else {
+    digitalWrite(LED_PIN, LOW);
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
