@@ -426,7 +426,7 @@ The WiFi library is provided with your Arduino download, but other libraries wil
 
   WiFi.begin(ssid, password); //Starts connecting to the WiFi network with the credentials you provided.
   WiFi.setTxPower(WIFI_POWER_8_5dBm); //(Important only for the ESP-C3) Sets the WiFi transmit power.
-    ```
+  ````
 
 7. This loop keeps checking if the ESP32 is connected to WiFi. It prints a dot to the serial monitor every 0.5 seconds until the connection is successful. It reads out the `WiFi.status()` function. The `!=` operator means "not equal".   
     ```cpp
