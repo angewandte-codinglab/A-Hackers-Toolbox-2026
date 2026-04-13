@@ -46,26 +46,26 @@
 Arduino Code is written mostly in a variant of C++, which is made specific for the Arduino environment. Like in every programming language, it is important that you are precise in your syntax.
 
 ### 1. Basic Program Structure
-   **Setup** 
-   This is everything that runs once. Things will be turned on or activated from here. Runs only at the beginning of the program, hence when you upload code/turn the ESP on.
-   These functions need to be called for the program to work – they can be empty though.
+**Setup**
 
-   ```c++
-   void setup() {
-        // Code is happening in here
-   }
-   ```
+This is everything that runs once. Things will be turned on or activated from here. Runs only at the beginning of the program, hence when you upload code/turn the ESP on. These functions need to be called for the program to work – they can be empty though.
 
-   **Loop**
-   This is everything that runs forever. Like LEDs blinking, Motors spinning, you name it.
+```cpp
+void setup() {
+  // Code is happening in here
+}
+```
 
-   ```c++
-   void loop() {
-        // Code is happening here
-   }
-    ```
+**Loop**
 
-    
+This is everything that runs forever. Like LEDs blinking, motors spinning, you name it.
+
+```cpp
+void loop() {
+  // Code is happening here
+}
+```
+
 
 ### 2. Adressing Pins
 Arduino IDE has some built-in **functions** that are use to address the different parts of the ESP32. The most basic is called `digitalWrite()`. It is used to adress a pin on the board and regulate it Output. LOW is off, while HIGH is on.
@@ -74,12 +74,13 @@ Between the brackets of the function you write the values you want to pass to it
 
 So to turn on a pin you need to write:
 
-```c++
+```cpp
 digitalWrite(8, HIGH);
 ```
 
 To turn it off respectively:
-```c++
+
+```cpp
 digitalWrite(8, LOW);
 ```
 
@@ -87,7 +88,7 @@ Line endings are always marked with `;`
 
 We need to make sure the pin configured to put stuff out - this needs only to happen once:
     
-```c++
+```cpp
 pinMode(8, OUTPUT);
 ```
 
@@ -95,14 +96,14 @@ pinMode(8, OUTPUT);
 ### 3. Time
 **Time** is calculated in Milliseconds (ms). If you put a delay() in your code, the program waits for that time to do the next thing. 
 
-```c++
+```cpp
 delay(1000);
 ```
 
 ### 4. Blink Onboard LED
 The internal LED of the ESP is at Pin 8. Lets blink it. After running this code a blue LED on the ESP should Blink.
 
-```
+```cpp
 void setup() {
   pinMode(8, OUTPUT);
 }
@@ -117,7 +118,7 @@ void loop() {
 
 ---
 
-### 4. Breadboards
+## 5. Breadboards
 The breadboard allows you to quickly and easily build electronic circuits without soldering by simply plugging in components and wires. Its internal connections look like this:
 
 ![Breadboard](../images/breadboard.jpg)
@@ -125,7 +126,7 @@ The breadboard allows you to quickly and easily build electronic circuits withou
 
 ---
 
-### 5. Blink the LED from the Kit
+## 6. Blink the LED from the Kit
 1. Find the Red LED in the Kit
 2. The LED has two "legs". The longer one is positive (+), the shorter one negative (-).
 3. Connect the + to Pin 4, - to G (Ground)
@@ -138,14 +139,16 @@ int LedPin = 4;
 
 Here are some of the basic variable types in Arduino:
 
-- **int**: Integer type. Stores whole numbers, e.g., `int counter = 0;`
-- **float**: Floating point number. Stores decimal numbers, e.g., `float temperature = 24.6;`
-- **double**: Double-precision floating point. Behaves like `float`, e.g., `double distance = 10.25;`
-- **char**: Character type. Stores a single character, e.g., `char letter = 'A';`
-- **boolean**: Stores `true` or `false`, e.g., `boolean isOn = false;`
-- **byte**: 8-bit unsigned number (0–255), e.g., `byte sensorValue = 128;`
-- **String**: Stores a string of text (note: capital S), e.g., `String name = "ESP32";`
-- **unsigned int, unsigned long, etc.**: Unsigned versions of numeric types for only positive values.
+| Type                           | Description                                                          | Example                          |
+|---------------------------------|----------------------------------------------------------------------|----------------------------------|
+| **int**                        | Integer type. Stores whole numbers                                   | `int counter = 0;`               |
+| **float**                      | Floating point number. Stores decimal numbers                        | `float temperature = 24.6;`      |
+| **double**                     | Double-precision floating point. Behaves like `float`                | `double distance = 10.25;`       |
+| **char**                       | Character type. Stores a single character                            | `char letter = 'A';`             |
+| **boolean**                    | Stores `true` or `false`                                             | `boolean isOn = false;`          |
+| **byte**                       | 8-bit unsigned number (0–255)                                        | `byte sensorValue = 128;`        |
+| **String**                     | Stores a string of text (note: capital S)                            | `String name = "ESP32";`         |
+| **unsigned int, unsigned long**| Unsigned versions of numeric types for only positive values           |                                  |
 
 Example usage:
 ```c++
@@ -175,7 +178,7 @@ void loop() {
 
 ---
 
-### 6. Voltage, Amplitude, Watts
+## 7. Voltage, Amplitude, Watts
 
 In order to not burn things, we need to learn the basics of electricity. 
 
@@ -196,7 +199,7 @@ When connecting an LED to a power source (like an Arduino), you must use a **res
 LEDs only need a small current (usually around 20mA). Directly connecting them to a power supply (like 5V) will push way more current through them than they can handle. By adding a resistor, you "slow down" the flow of electricity so only a safe amount reaches the LED.
 
 
-####**Choosing a Resistor Value for an LED:**
+#### **Choosing a Resistor Value for an LED**
 
 The resistor value depends on the LED's specs and the supply voltage. For a 5V Arduino and a standard red LED (forward voltage ~2V):
 
@@ -205,7 +208,7 @@ Resistor (ohms) = (Supply Voltage - LED Forward Voltage) / Desired Current
                 = (5V - 2V) / 0.02A = 150Ω
 ```
 
-####**Resistor Cheat Sheet**
+#### **Resistor Cheat Sheet**
 Normally the first band is a little bit closer to the edge or wider. Most of the time the Tolerance is either gold or silver and on the very right.
 
 Find the 150Ω Resistor and place it in the circuit. The LED should be more dim now.
@@ -217,7 +220,7 @@ Find the 150Ω Resistor and place it in the circuit. The LED should be more dim 
 
 ---
 
-### 8. Print Messages to the Serial Port
+## 8. Print Messages to the Serial Port
 
 Printing messages to the Serial Port allows you to monitor what's happening inside your Arduino. This is incredibly useful for debugging and understanding your program.
 
@@ -256,7 +259,7 @@ void loop() {
 }
 ```
 
-####**How to View Serial Messages:**
+#### **How to View Serial Messages**
 
 1. Upload the code to your Arduino board.
 2. In the Arduino IDE, go to **Tools > Serial Monitor** (or CMD/Ctrl + Shift + M).
@@ -272,7 +275,7 @@ void loop() {
 
 ---
 
-### 9. Potentiometer
+## 9. Potentiometer
 A potentiometer is a variable resistor that is be used to adjust voltage. Turning the knob changes the resistance, which lets you vary the output signal. 
 
 ![Potentiometer](../images/potentiometer.jpg)
@@ -341,7 +344,7 @@ Pulse Width Modulation (PWM) lets us dim the LED by controlling how much of the 
 
 ```cpp
 analogWrite(ledPin, brightness);
-````
+```
 
 The `map()` function in Arduino re-scales a number from one range to another, such as converting a sensor input (0–1023) to an LED brightness value (0–255).
 
@@ -378,14 +381,14 @@ void loop() {
 
 ---
 
-### 10. Wifi Indicator & Arduino Libraries
+## 10. Wifi Indicator & Arduino Libraries
 The ESP32 has WiFi onboard. But natively, in the Arduino IDE there is no functions for WiFi. You can extend the functionality of your programs by using **libraries**. 
 
 Libraries are generally imported at the very top of your program – like this:
 
 ```cpp
-#include <Wifi.h> //No semicolon needed!
-````
+#include <WiFi.h> //No semicolon needed!
+```
 
 The WiFi library is provided with your Arduino download, but other libraries will need to be installed seperately.
 
@@ -398,7 +401,7 @@ The WiFi library is provided with your Arduino download, but other libraries wil
    ```cpp
    char *ssid = "mySsid";
    char *password = "myPassword"; 
-   ````
+   ```
    
 
 4. Define the LED Pin.  
@@ -426,22 +429,22 @@ The WiFi library is provided with your Arduino download, but other libraries wil
 
   WiFi.begin(ssid, password); //Starts connecting to the WiFi network with the credentials you provided.
   WiFi.setTxPower(WIFI_POWER_8_5dBm); //(Important only for the ESP-C3) Sets the WiFi transmit power.
-  ````
+  ```
 
 7. This loop keeps checking if the ESP32 is connected to WiFi. It prints a dot to the serial monitor every 0.5 seconds until the connection is successful. It reads out the `WiFi.status()` function. The `!=` operator means "not equal".   
-    ```cpp
+```cpp
     while (WiFi.status() != WL_CONNECTED) {
       delay(500);
       Serial.println('.');
     }
-    ```
+```
     
 8. Once the condition of the while loop is not fulfilled anymore (that means `WiFi.status() = WL_CONNECTED`) the rest of the code is executed. Let's print out the IP-Adress of the ESP and turn on the LED.
-    ```cpp
+```cpp
     Serial.print("Connected, IP: ");
     Serial.println(WiFi.localIP());
     digitalWrite(LED_PIN, HIGH); 
-
+```
    
 9. The loop is empty as we're doing this only once. 
   ```cpp
@@ -497,22 +500,150 @@ void loop() {
 
 ---
 
-### 11. Wifi Traffic LED
+## 11. Wifi Traffic LED
 
-**Example Code:**
+In the spirit of Lukas Trunigers work, lets try to create somewhat of a network. The following example detects WiFi packets in the Network and blinks the LED accordingly. 
+
+1. **Includes the WiFi library for network connectivity**
+   ```cpp
+   #include <WiFi.h>
+   ```
+
+2. **Includes ESP32-specific WiFi functions for packet sniffing**
+   ```cpp
+   #include "esp_wifi.h"
+   ```
+
+3. **Set your network's SSID and password**
+   ```cpp
+   char *ssid = "YOUR_SSID";
+   char *password = "YOUR_PASSWORD";
+   ```
+
+4. **Defines the pin number for the LED**
+   ```cpp
+   int LED_PIN = 4;
+   ```
+
+5. **Sets how long (in milliseconds) the LED stays on after detecting WiFi traffic**
+   ```cpp
+   unsigned long LED_ON_TIME_MS = 35;
+   ```
+
+6. **Stores the time the last WiFi packet was detected**
+   ```cpp
+   unsigned long lastPacketMs = 0;
+   ```
+
+7. **Callback function: Updates the last packet time when a WiFi data packet is received**
+   ```cpp
+   void onWiFiPacket(void *buf, wifi_promiscuous_pkt_type_t type) {
+     if (type != WIFI_PKT_DATA) {
+       return;
+     }
+     lastPacketMs = millis();
+   }
+   ```
+
+8. **Sets up the LED, serial communication, WiFi connection, and packet sniffing**
+   - **8.1. Set the LED pin as output and turn it off at first**
+     ```cpp
+     pinMode(LED_PIN, OUTPUT);
+     digitalWrite(LED_PIN, LOW);
+     ```
+   - **8.2. Start serial communication for debugging output**
+     ```cpp
+     Serial.begin(115200);
+     delay(500);
+     ```
+   - **8.3. Set WiFi mode to 'station' and begin connecting to access point**
+     ```cpp
+     WiFi.mode(WIFI_STA);
+     WiFi.begin(ssid, password);
+     ```
+   - **8.4. Wait in a loop until the ESP32 successfully connects to WiFi and print connection status**
+     ```cpp
+     Serial.print("Connecting");
+     while (WiFi.status() != WL_CONNECTED) {
+       delay(500);
+       Serial.print(".");
+     }
+     Serial.println();
+     Serial.print("Connected, IP address: ");
+     Serial.println(WiFi.localIP());
+     ```
+   - **8.5. Set up packet sniffing: register callback and enable promiscuous mode**
+     ```cpp
+     esp_wifi_set_promiscuous_rx_cb(onWiFiPacket);
+     esp_wifi_set_promiscuous(true);
+     ```
+   - **8.6. Full setup function:**
+     ```cpp
+     void setup() {
+       // 8.1
+       pinMode(LED_PIN, OUTPUT);
+       digitalWrite(LED_PIN, LOW);
+
+       // 8.2
+       Serial.begin(115200);
+       delay(500);
+
+       // 8.3
+       WiFi.mode(WIFI_STA);
+       WiFi.begin(ssid, password);
+
+       // 8.4
+       Serial.print("Connecting");
+       while (WiFi.status() != WL_CONNECTED) {
+         delay(500);
+         Serial.print(".");
+       }
+       Serial.println();
+       Serial.print("Connected, IP address: ");
+       Serial.println(WiFi.localIP());
+
+       // 8.5
+       esp_wifi_set_promiscuous_rx_cb(onWiFiPacket);
+       esp_wifi_set_promiscuous(true);
+     }
+     ``` 
+
+9. **Turns the LED on if a WiFi packet was recently detected, otherwise turns it off**
+   ```cpp
+   void loop() {
+     unsigned long now = millis();
+     unsigned long when = lastPacketMs;
+
+     if (now - when <= LED_ON_TIME_MS) {
+       digitalWrite(LED_PIN, HIGH);
+     } else {
+       digitalWrite(LED_PIN, LOW);
+     }
+   }
+   ```
+
+
+> **Promiscuous mode** is a special setting for network devices (like the ESP32’s WiFi chip) that allows them to receive all wireless packets on the channel, not just those addressed to them.  
+>  
+> This is essential for tasks like packet sniffing or monitoring WiFi activity nearby. In the example above, `esp_wifi_set_promiscuous(true)` enables this mode, and the callback `onWiFiPacket` gets called for each captured packet, letting us detect when any packet is seen (regardless of sender or recipient).
+
+
+<details>
+<summary>**Full Code**</summary>
+
 ```cpp
 #include <WiFi.h>
 #include "esp_wifi.h"
 
 // ----- change these for your network -----
-const char *ssid = "YOUR_SSID";
-const char *password = "YOUR_PASSWORD";
+char *ssid = "YOUR_SSID";
+char *password = "YOUR_PASSWORD";
 
-const int LED_PIN = 4;
+int LED_PIN = 4;
 
-const unsigned long LED_ON_TIME_MS = 35;
+unsigned long LED_ON_TIME_MS = 35;
 
-volatile unsigned long lastPacketMs = 0;
+unsigned long lastPacketMs = 0;
 
 void onWiFiPacket(void *buf, wifi_promiscuous_pkt_type_t type) {
   if (type != WIFI_PKT_DATA) {
@@ -556,16 +687,6 @@ void loop() {
 }
 ```
 
-
-
-
-
-
-
-
-
-
-
-
+</details>
 
 
