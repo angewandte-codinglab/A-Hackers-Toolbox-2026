@@ -1,5 +1,7 @@
 # Session 02
 
+---
+
 ![](../images/esp32-c3-supermini-schematics.jpg)
 
 ## 1. Installing the Arduino IDE
@@ -227,6 +229,11 @@ Let's extend our LED blink example to print messages when the LED turns on and o
 
 `Serial.println("Your message");` sends the message to the Serial Monitor and makes a new line.
 
+> With the ESP32-C3 Super Mini, you have to enable the Serial Port before uploading your sketch. This needs to be to by going to `Tools > USB CDC on Boot > Choose "Enabled"`
+
+
+
+
 
 **Updated Code:**
 
@@ -281,9 +288,14 @@ The potentiometer has three pins. When you look at it from the front the Pins ar
 #### **Reading out the Potentiometer**
 The Arduino reads the output pin voltage of the potentiometer using an analog pin.
 
-**Analog pins** can read varying voltage levels (not just on or off) and provide a value from 0 to 1023 representing that voltage.
+**Analog pins** can read varying voltage levels (not just on or off) and provide a value from 0 to 1023 representing that voltage. The function `analogRead(Pin)` reads out the values of the pin. It should do this for each loop iteration, so we put it at the beginning of `void loop()`
+
+```cpp
+potValue = analogRead(potPin);
+```
 
 Now we learn about **if-conditions**. 
+
 ```cpp
 if (something > other) {
     Serial.println("Something is bigger than other");
@@ -366,21 +378,94 @@ void loop() {
 
 ---
 
-### 10. Wifi Blink
+### 10. Wifi Indicator & Arduino Libraries
+The ESP32 has WiFi onboard. But natively, in the Arduino IDE there is no functions for WiFi. You can extend the functionality of your programs by using **libraries**. 
 
-**Example Code:**
+Libraries are generally imported at the very top of your program – like this:
+
+```cpp
+#include <Wifi.h> //No semicolon needed!
+````
+
+The WiFi library is provided with your Arduino download, but other libraries will need to be installed seperately.
+
+1. Connect the LED with a fitting resistor to pin 4.
+2. Import the Wifi Library
+   ```cpp
+   #include <WiFi.h>
+   ```
+3. The ESP needs to know the name and password of the WiFi it should connect to.
+   ```cpp
+   char *ssid = "mySsid";
+   char *password = "myPassword"; 
+   ````
+   
+
+4. Define the LED Pin.  
+  ```cpp
+  int ledPin = 4;
+  ```
+  This tells the ESP32 which pin the LED is connected to (GPIO 4, in this case).
+
+
+5. Set pinMode and begin Serial. For stability, we add a short delay after this
+  ```c++
+  void setup() { 
+    pinMode(ledPin, OUTPUT); 
+    digitalWrite(ledPin, LOW);  
+    Serial.begin(115200);  
+    delay(500);  
+    
+  ```
+
+6. Still inside the setup function we need to place some WiFi settings. 
+  ```cpp
+  WiFi.mode(WIFI_STA); //Sets the ESP32 to "station mode" so it can connect to an existing WiFi network.
+  WiFi.disconnect(true); //Ensures the ESP32 isn't connected to any WiFi before trying to join the new network.
+  delay(100); 
+
+  WiFi.begin(ssid, password); //Starts connecting to the WiFi network with the credentials you provided.
+  WiFi.setTxPower(WIFI_POWER_8_5dBm); //(Important only for the ESP-C3) Sets the WiFi transmit power.
+    ```
+
+7. This loop keeps checking if the ESP32 is connected to WiFi. It prints a dot to the serial monitor every 0.5 seconds until the connection is successful. It reads out the `WiFi.status()` function. The `!=` operator means "not equal".   
+    ```cpp
+    while (WiFi.status() != WL_CONNECTED) {
+      delay(500);
+      Serial.println('.');
+    }
+    ```
+    
+8. Once the condition of the while loop is not fulfilled anymore (that means `WiFi.status() = WL_CONNECTED`) the rest of the code is executed. Let's print out the IP-Adress of the ESP and turn on the LED.
+    ```cpp
+    Serial.print("Connected, IP: ");
+    Serial.println(WiFi.localIP());
+    digitalWrite(LED_PIN, HIGH); 
+
+   
+9. The loop is empty as we're doing this only once. 
+  ```cpp
+  void loop() {
+
+  }
+  ```
+
+
+
+<details>
+<summary>Code</summary>
 
 ```cpp
 #include <WiFi.h>
 
-constexpr const char *ssid = "ssid";
-constexpr const char *password = "password";
+char *ssid = "mySsid";
+char *password = "myPassword";
 
-constexpr int LED_PIN = 4;
+int ledPin = 4;
 
 void setup() {
-  pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, LOW);
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, LOW);
 
   Serial.begin(115200);
   delay(500);
@@ -403,9 +488,12 @@ void setup() {
   digitalWrite(LED_PIN, HIGH);
 }
 
-void loop() {}
+void loop() {
+
+}
 ```
 
+</details>
 
 ---
 
