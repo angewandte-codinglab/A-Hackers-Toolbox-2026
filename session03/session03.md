@@ -5,11 +5,13 @@
 
 
 ## 1. Blink the LED from the Kit (Again)
+![LED](../images/led.jpg)
 1. Find the Red LED in the Kit
 2. The LED has two "legs". The longer one is positive (+), the shorter one negative (-).
 3. Connect the + to Pin 4, - to G (Ground)
 
-Instead of changing all the 8s in the code to 4s we can use variables. Variables need to be defined before the the main code gets executed.
+![LED Circuit](../images/led_circuit-with_resistor.jpg)
+Instead of changing all the pin numbers in the code, we can use variables. Variables need to be defined before the the main code gets executed.
 
 ```c++
 int LedPin = 4;
@@ -121,7 +123,7 @@ Let's extend our LED blink example to print messages when the LED turns on and o
 **Updated Code:**
 
 ```cpp
-int ledPin = 13;
+int ledPin = 4;
 
 void setup() {
   pinMode(ledPin, OUTPUT);
@@ -167,6 +169,7 @@ The potentiometer has three pins. When you look at it from the front the Pins ar
 2. Wire the potentiometer before the LED – just like a normal resistor
 3. Turn the knob and fade the LED
 
+![Potentiometer Schematic](../images/led_circuit-with-potentiometer.jpg)
 
 #### **Reading out the Potentiometer**
 The Arduino reads the output pin voltage of the potentiometer using an analog pin.
@@ -176,6 +179,8 @@ The Arduino reads the output pin voltage of the potentiometer using an analog pi
 ```cpp
 potValue = analogRead(potPin);
 ```
+
+Let's just **print** the potPin value out to see what we get.
 
 Now we learn about **if-conditions**. 
 
@@ -187,39 +192,55 @@ if (something > other) {
 }
 ```
 
-**Example Code:**
+**Example Code – Broken Down in Steps:**
 
-```cpp
-int ledPin = 4;
-int potPin = A0;
-int potValue = 0;
-int threshold = 600;
+1. **Define pins and variables**
+    ```cpp
+    int ledPin = 4;
+    int potPin = A0;
+    int potValue = 0;
+    int threshold = 600;
+    ```
 
-void setup() {
-  pinMode(ledPin, OUTPUT);
-  Serial.begin(9600);
-}
+2. **Initialize the pins and Serial in setup**
+    ```cpp
+    void setup() {
+      pinMode(ledPin, OUTPUT);
+      Serial.begin(9600);
+    }
+    ```
 
-void loop() {
-  potValue = analogRead(potPin);
+3. **Read potentiometer, check value, and control LED**
+    ```cpp
+    void loop() {
+      // 3.1. Read potentiometer value
+      potValue = analogRead(potPin);
 
-  if (potValue > threshold) {
-    digitalWrite(ledPin, HIGH);
-    Serial.print("Potentiometer: ");
-    Serial.print(potValue);
-    Serial.println("  LED is ON");
-  } else {
-    digitalWrite(ledPin, LOW);
-    Serial.print("Potentiometer: ");
-    Serial.print(potValue);
-    Serial.println("  LED is OFF");
-  }
+      // 3.2. Compare with threshold and turn LED on or off
+      if (potValue > threshold) {
+        digitalWrite(ledPin, HIGH);
 
-  delay(50);
-}
-```
+        // 3.3. Print status to Serial
+        Serial.print("Potentiometer: ");
+        Serial.print(potValue);
+        Serial.println("  LED is ON");
+      } else {
+        digitalWrite(ledPin, LOW);
 
-#### Pulse-Width-Modulation
+        Serial.print("Potentiometer: ");
+        Serial.print(potValue);
+        Serial.println("  LED is OFF");
+      }
+
+      // 3.4. Small delay for readability
+      delay(50);
+    }
+
+  ```
+
+#### **Pulse-Width-Modulation & analogWrite()** 
+![PWM](../images/pwm.jpg)
+
 Pulse Width Modulation (PWM) lets us dim the LED by controlling how much of the time it's on, rather than just turning it fully on or off. The Arduino function to access this is called `analogWrite()`
 
 ```cpp
@@ -538,5 +559,55 @@ void loop() {
 ```
 
 </details>
+
+---
+
+## 8. Buttons
+
+![Button](../images/button.jpg)
+
+When the button is pressed, it completes (closes) the circuit, allowing your Arduino to *detect* the button press.
+
+#### Internal Pullup
+A pullup resistor ensures that the input pin reads a defined HIGH voltage when the button is not pressed, preventing unreliable or floating readings.
+
+![Button Schematic Interal Pullup](../images/button_circuit-internal-pullup.jpg)
+
+
+```cpp
+int buttonPin = 3;   
+int ledPin = 4;      
+
+void setup() {
+  pinMode(buttonPin, INPUT_PULLUP); // Enables the pin's internal pull-up resistor
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  int buttonState = digitalRead(buttonPin);
+
+  if (buttonState == LOW) {         
+    digitalWrite(ledPin, HIGH);     
+  } else {
+    digitalWrite(ledPin, LOW);      
+  }
+}
+```
+
+
+#### External Pullup
+
+The downside of a internal pullup is that it can be unrelieable, especially on small devices. This is how to wire an external pullup:
+
+![Button Schematic](../images/button_circuit-external-pullup.jpg)
+
+In the code we just change this line:
+
+```cpp
+pinMode(buttonPin, INPUT); // Remove _PULLUP
+```
+
+#### 
+
 
 
