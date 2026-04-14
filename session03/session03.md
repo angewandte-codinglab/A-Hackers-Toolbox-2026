@@ -14,8 +14,8 @@ Instead of changing all the 8s in the code to 4s we can use variables. Variables
 ```c++
 int LedPin = 4;
 ```
-
-Here are some of the basic variable types in Arduino:
+<details>
+<summary>Basic variable types in Arduino:</summary>
 
 | Type                           | Description                                                          | Example                          |
 |---------------------------------|----------------------------------------------------------------------|----------------------------------|
@@ -27,6 +27,8 @@ Here are some of the basic variable types in Arduino:
 | **byte**                       | 8-bit unsigned number (0–255)                                        | `byte sensorValue = 128;`        |
 | **String**                     | Stores a string of text (note: capital S)                            | `String name = "ESP32";`         |
 | **unsigned int, unsigned long**| Unsigned versions of numeric types for only positive values           |                                  |
+
+</details>
 
 Example usage:
 ```c++
