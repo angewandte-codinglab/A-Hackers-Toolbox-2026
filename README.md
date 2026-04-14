@@ -5,6 +5,7 @@ Complimentary Resources to the course at the University of Applied Arts
 
 ## Session 01 (Introduction)
 ## [➔ Session 02](./session02/session02.md)
+## [➔ Session 03](./session03/session03.md)
 
 
 ### Presentation
