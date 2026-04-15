@@ -174,7 +174,7 @@ The potentiometer has three pins. When you look at it from the front the Pins ar
 #### **Reading out the Potentiometer**
 The Arduino reads the output pin voltage of the potentiometer using an analog pin.
 
-**Analog pins** can read varying voltage levels (not just on or off) and provide a value from 0 to 1023 representing that voltage. The function `analogRead(Pin)` reads out the values of the pin. It should do this for each loop iteration, so we put it at the beginning of `void loop()`
+**Analog pins** can read varying voltage levels (not just on or off) and provide a value from 0 to 4095 representing that voltage. The function `analogRead(Pin)` reads out the values of the pin. It should do this for each loop iteration, so we put it at the beginning of `void loop()`
 
 ```cpp
 potValue = analogRead(potPin);
@@ -247,7 +247,7 @@ Pulse Width Modulation (PWM) lets us dim the LED by controlling how much of the 
 analogWrite(ledPin, brightness);
 ```
 
-The `map()` function in Arduino re-scales a number from one range to another, such as converting a sensor input (0–1023) to an LED brightness value (0–255).
+The `map()` function in Arduino re-scales a number from one range to another, such as converting a sensor input (0–4095) to an LED brightness value (0–255).
 
 ```cpp
 map(potValue, 0, 1023, 0, 255);
@@ -268,7 +268,7 @@ void setup() {
 
 void loop() {
   potValue = analogRead(potPin);
-  int brightness = map(potValue, 0, 1023, 0, 255);
+  int brightness = map(potValue, 0, 4095, 0, 255);
   analogWrite(ledPin, brightness);
 
   Serial.print("Potentiometer: ");
