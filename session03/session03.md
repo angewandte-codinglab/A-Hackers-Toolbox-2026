@@ -532,6 +532,7 @@ void setup() {
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
+  WiFi.setTxPower(WIFI_POWER_8_5dBm);
 
   Serial.print("Connecting");
   while (WiFi.status() != WL_CONNECTED) {
