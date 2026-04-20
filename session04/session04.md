@@ -59,7 +59,7 @@ The WiFi library is provided with your Arduino download, but other libraries wil
 ```cpp
     Serial.print("Connected, IP: ");
     Serial.println(WiFi.localIP());
-    digitalWrite(LED_PIN, HIGH); 
+    digitalWrite(ledPin, HIGH); 
 ```
    
 8. **The loop is empty as we're doing this only once.**
@@ -107,7 +107,7 @@ void setup() {
   Serial.print("Connected, IP: ");
   Serial.println(WiFi.localIP());
 
-  digitalWrite(LED_PIN, HIGH);
+  digitalWrite(ledPin, HIGH);
 }
 
 void loop() {
