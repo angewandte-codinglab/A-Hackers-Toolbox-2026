@@ -296,7 +296,7 @@ A pullup resistor ensures that the input pin reads a defined HIGH voltage when t
 
 
 ```cpp
-int buttonPin = 3;   
+int buttonPin = 10;   
 int ledPin = 4;      
 
 void setup() {
