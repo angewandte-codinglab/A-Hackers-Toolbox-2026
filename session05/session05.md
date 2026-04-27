@@ -40,6 +40,7 @@ We will install a library that makes coded infrared communication easier.
 3. Install "IRremote" by shirriff.
 
 ![Installing external libraries](../images/install-external-libraries.png)
+![Button Schematic Interal Pullup](../images/button_circuit-internal-pullup.jpg)
 
 ### Send out a signal with a button press.
 
@@ -207,6 +208,80 @@ void sendMessage(String msg) {
 ```
 
 </details>
+
+## 2. TV-B Gone
+
+This example loops through all "Power Off" codes found on this website: https://tasmota.github.io/docs/Codes-for-IR-Remotes/#sony-bd-s1500
+
+```cpp
+#include <IRremote.hpp>
+
+#define IR_LED_PIN 4
+#define BUTTON_PIN 3
+
+// Tuning knobs
+const uint16_t pauseMs = 250;
+const uint16_t debounceButton = 800;
+
+void setup() {
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  Serial.begin(9600);
+
+  IrSender.begin(IR_LED_PIN);
+  delay(100);
+
+  Serial.println("ready");
+}
+
+void loop() {
+  if (digitalRead(BUTTON_PIN) == LOW) {
+    blastAllPowerCodes();
+    delay(debounceButton);
+  }
+}
+
+void blastAllPowerCodes() {
+  Serial.println("Sending power codes...");
+
+  // From https://tasmota.github.io/docs/Codes-for-IR-Remotes/
+
+  // Samsung (SAMSUNG protocol)
+  IrSender.sendSamsung(0xE0E0, 0x40, 2); delay(pauseMs);
+  IrSender.sendSamsung(0xE0E0, 0x99, 2); delay(pauseMs);
+  IrSender.sendSamsung(0xE0E0, 0x19, 2); delay(pauseMs);
+
+  // Sony SIRC (Tasmota Data packed as (address<<7)|command)
+  IrSender.sendSony((uint16_t)(0x750 >> 7), (uint8_t)(0x750 & 0x7F), 2, 12); delay(pauseMs);
+  IrSender.sendSony((uint16_t)(0xF50 >> 7), (uint8_t)(0xF50 & 0x7F), 2, 12); delay(pauseMs);
+  IrSender.sendSony((uint16_t)(0xA90 >> 7), (uint8_t)(0xA90 & 0x7F), 2, 12); delay(pauseMs);
+  IrSender.sendSony((uint16_t)(0xA8B47 >> 7), (uint8_t)(0xA8B47 & 0x7F), 2, 20); delay(pauseMs);
+
+  // NEC (address = upper 16 bits, command = bits 15..8)
+  IrSender.sendNEC(0x00FE, 0xA8, 2); delay(pauseMs);
+  IrSender.sendNEC(0x0008, 0x00, 2); delay(pauseMs);
+  IrSender.sendNEC(0x2662, 0xBA, 2); delay(pauseMs);
+  IrSender.sendNEC(0x00FF, 0x30, 2); delay(pauseMs);
+  IrSender.sendNEC(0x10C8, 0xE1, 2); delay(pauseMs);
+  IrSender.sendNEC(0xCC00, 0x00, 2); delay(pauseMs);
+  IrSender.sendNEC(0xE13E, 0xA4, 2); delay(pauseMs);
+  IrSender.sendNEC(0xE13E, 0x13, 2); delay(pauseMs);
+  IrSender.sendNEC(0x7E81, 0x7E, 2); delay(pauseMs);
+  IrSender.sendNEC(0x7E81, 0xFE, 2); delay(pauseMs);
+  IrSender.sendNEC(0x00FF, 0x00, 2); delay(pauseMs);
+  IrSender.sendNEC(0x10ED, 0x00, 2); delay(pauseMs);
+  IrSender.sendNEC(0x10ED, 0x40, 2); delay(pauseMs);
+  IrSender.sendNEC(0x00FF, 0x00, 2); delay(pauseMs);
+  IrSender.sendNEC(0x00FF, 0x80, 2); delay(pauseMs);
+  IrSender.sendNEC(0x01FE, 0x48, 2); delay(pauseMs);
+  IrSender.sendNEC(0x01FE, 0x58, 2); delay(pauseMs);
+  IrSender.sendNEC(0x08E7, 0x62, 2); delay(pauseMs);
+
+  Serial.println("Done.");
+
+}
+````
+
+
 
 
 
