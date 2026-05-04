@@ -140,7 +140,7 @@ We can use the values read out from the Distance Sensor to control the pitch of 
 
 SimpleUltrasonic sensor(5, 6);
 
-int buzzerPin = 10;
+int buzzerPin = 11;
 
 
 void setup()
