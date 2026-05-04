@@ -116,6 +116,7 @@ We can use the values read out from the Distance Sensor to control the pitch of 
 5. **Update if-condition in loop.** Inside of `if (distance != -1) {` we want to map the read out value to the pitch of the tone. For this we can use the map() function. It works like this: `map(yourInput, inputMinimum, inputMaximum, outputMinimum, outputMaximum);` 
    ```cpp
    float freq = map(distanceCM, 5.0, 80.0, 2000.0, 50.0);
+   tone(buzzerPin, freq);
    ```
 
    after `} else {` we add:
