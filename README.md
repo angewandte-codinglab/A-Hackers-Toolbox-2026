@@ -9,6 +9,7 @@ Complimentary Resources to the course at the University of Applied Arts
 ## [➔ Session 03](./session03/session03.md)
 ## [➔ Session 04](./session04/session04.md)
 ## [➔ Session 05](./session05/session05.md)
+## [➔ Session 06](./session06/session06.md)
 
 
 
