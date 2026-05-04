@@ -276,3 +276,120 @@ Of course Arduino also has a library for this, generously contributed by Adrien 
 
 10. In Protokol, set the correct Port and enable receiving. ![](../images/protokol.png)
 
+## 5. Receiving OSC Messages on ESP
+
+### Apps
+**Android:**
+- OSC Controller:https://play.google.com/store/apps/details?id=com.ffsmultimedia.osccontroller
+
+**iOS:** 
+- Data OSC: https://apps.apple.com/at/app/data-osc/id6447833736?l=en-GB
+- ZIG SIM: https://apps.apple.com/at/app/zig-sim/id1112909974?l=en-GB
+
+### Code
+
+```cpp
+#include <WiFi.h>
+#include <WiFiUdp.h>
+#include <OSCMessage.h>
+#include <OSCBundle.h>
+#include <OSCData.h>
+
+char ssid[] = "***";          // your network SSID (name)
+char pass[] = "***";           
+
+int buzzerPin = 10;
+
+const unsigned int localPort = 8000;
+
+OSCErrorCode error;
+WiFiUDP Udp;
+
+int currentFreqHz = 0;
+int lastToneHz = -1;
+unsigned long lastPacketMs = 0;
+
+
+void setup()
+{
+    Serial.begin(9600);
+
+    pinMode(buzzerPin, OUTPUT);
+    noTone(buzzerPin); 
+
+    WiFi.begin(ssid, pass);
+
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+    Serial.println("WiFi connected");
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
+
+    Udp.begin(localPort);
+
+}
+
+void loop()
+{
+    int size = Udp.parsePacket();
+
+    if (size > 0) {
+        // ZigSim sends OSC Bundles (#bundle) containing messages.
+        OSCBundle bundle;
+
+        while (size--) bundle.fill((uint8_t)Udp.read());
+
+        if (!bundle.hasError()) {
+            OSCMessage *m = bundle.getOSCMessage("/ZIGSIM/DRONE/gyro");
+
+            if (m != nullptr && m->size() >= 3) {
+                // ZigSim gyro: 3 floats (x, y, z). We'll use Z (arg2).
+                float z = 0.0f;
+                if (m->isFloat(2)) z = m->getFloat(2);
+                else if (m->isInt(2)) z = (float)m->getInt(2);
+
+                // Expect about -1..1; map to frequency 200..2000 Hz (avoid low rumble/noise)
+                z = constrain(z, -1.0f, 1.0f);
+                currentFreqHz = (int)(200.0f + ((z + 1.0f) * 0.5f) * (2000.0f - 200.0f));
+
+                Serial.print("gyroZ=");
+                Serial.print(z, 6);
+                Serial.print(" freq=");
+                Serial.println(currentFreqHz);
+
+                lastPacketMs = millis();
+            } else {
+                Serial.println("No /ZIGSIM/DRONE/gyro in bundle");
+            }
+        } else {
+            error = bundle.getError();
+        }
+    }
+
+    // Silence if no OSC packets recently.
+    if (millis() - lastPacketMs > 1000) currentFreqHz = 0;
+
+    // Only (re)apply tone when it changes; when silent, force pin LOW to avoid hiss.
+    if (currentFreqHz > 0) {
+        if (currentFreqHz != lastToneHz) {
+            tone(buzzerPin, currentFreqHz);
+            lastToneHz = currentFreqHz;
+        }
+    } else {
+        if (lastToneHz != 0) {
+            noTone(buzzerPin);
+            digitalWrite(buzzerPin, LOW);
+            lastToneHz = 0;
+        }
+    }
+
+    delay(10);
+}
+```
+
+
+
+
+
