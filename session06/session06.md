@@ -7,7 +7,7 @@
 
 In your Toolkit you'll find the bigger **ESP32 S3 Feather** board. To use we have to select it in the Board Manager by searching for: 
 
-### **Adafruit ESP32-S3 2MB PSRAM**
+### **Adafruit Feather ESP32-S3 2MB PSRAM**
 
 ![](../images/boardsmanager_adafruit-esp-32-s3.png)
 
