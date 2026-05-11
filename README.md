@@ -10,6 +10,7 @@ Complimentary Resources to the course at the University of Applied Arts
 ## [➔ Session 04](./session04/session04.md)
 ## [➔ Session 05](./session05/session05.md)
 ## [➔ Session 06](./session06/session06.md)
+## [➔ Session 07](./session07/session07.md)
 
 
 
@@ -29,3 +30,5 @@ Complimentary Resources to the course at the University of Applied Arts
 - Mon, 04 May 2026, 12:45–16:45 Seminar Room 4
 - Mon, 11 May 2026, 12:45–16:45 Seminar Room 4
 - Mon, 18 May 2026, 12:45–16:45 Seminar Room 4
+
+## [Troubleshooting](./troubleshooting.md)
