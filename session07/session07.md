@@ -480,8 +480,8 @@ The ESP is also able to host simple Webpages, which you can easily access via th
 #include <WebServer.h>
 #include <ESP32Servo.h>
 
-const char *ssid = "woooosh";
-const char *password = "DiwdWnmG1!";
+const char *ssid = "***";
+const char *password = "***";
 
 const int servoPin1 = 12;
 const int servoPin2 = 13;
