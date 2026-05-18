@@ -523,6 +523,68 @@ void loop() {
 
 </details>
 
+<details>
+<summary>Start Stop Butto Code</summary>
+
+```cpp
+#include "DFRobotDFPlayerMini.h"
+
+#define FPSerial Serial2
+#define DFPLAYER_RX_PIN 38
+#define DFPLAYER_TX_PIN 39
+#define BTN_PIN 0  // built-in BOOT button (or wire a switch: pin -> GND)
+
+DFRobotDFPlayerMini myDFPlayer;
+bool playing = true;
+int track = 1;
+
+void setup() {
+  pinMode(BTN_PIN, INPUT_PULLUP);
+  FPSerial.begin(9600, SERIAL_8N1, DFPLAYER_RX_PIN, DFPLAYER_TX_PIN);
+  Serial.begin(115200);
+
+  if (!myDFPlayer.begin(FPSerial)) {
+    Serial.println("Unable to begin:");
+  }
+  Serial.println("DFPlayer Mini online.");
+
+  myDFPlayer.volume(2);
+  myDFPlayer.play(track);
+}
+
+void loop() {
+  if (digitalRead(BTN_PIN) == LOW) {
+    delay(200);
+    if (digitalRead(BTN_PIN) == LOW) {
+      playing = !playing;
+      if (playing) {
+        myDFPlayer.play(track);
+        Serial.println("play");
+      } else {
+        myDFPlayer.stop();
+        Serial.println("stop");
+      }
+      while (digitalRead(BTN_PIN) == LOW) {
+        delay(10);
+      }
+    }
+  }
+
+  if (!playing) {
+    return;
+  }
+
+  delay(2000);
+  track++;
+  if (track > 10) {
+    track = 1;
+  }
+  myDFPlayer.play(track);
+  Serial.println(track);
+}
+```
+
+</details>
 
 ## 5. Find near Bluetooth devices
 With the built in Bluetooth module, the ESP allows us to sniff for for nearby Bluetooth devices. We can not only count or list them, but also measure their signal strength – which works a bit like a proximity sensor for phones, wireless headphones or any other bluetooth device.
